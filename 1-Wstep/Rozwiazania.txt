@@ -1,0 +1,128 @@
+ZADANIE 15
+$ ghci
+GHCi, version 9.2.4: https://www.haskell.org/ghc/  :? for help
+
+<no location info>: warning: [-Wmissed-extra-shared-lib]
+    libgmp.so: cannot open shared object file: No such file or directory
+    It's OK if you don't want to use symbols from it directly.
+    (the package DLL is loaded by the system linker
+     which manages dependencies by itself).
+ghci> 2^3^2
+512
+ghci> (2^3)^2
+64
+ghci> 2^(2^3)
+256
+ghci> :i (^)
+(^) :: (Num a, Integral b) => a -> b -> a 	-- Defined in ‘GHC.Real’
+infixr 8 ^
+ghci> 2^(3^2)
+512
+
+
+ZADANIE 16
+ghci> import Prelude
+ghci> :i gcd
+gcd :: Integral a => a -> a -> a 	-- Defined in ‘GHC.Real’
+ghci> fi n k acc = if k < 1 then acc else if gcd k n == 1 then fi n (k-1) (acc+1) else fi n (k-1) acc
+ghci> euler n = fi n n 0
+ghci> euler 10
+4
+ghci> euler 11
+10
+ghci> euler 89
+88
+ghci> euler 17
+16
+ghci> euler 100
+40
+ghci> totient_sum n acc = if n < 1 then acc else totient_sum (n-1) (acc + (euler n))
+ghci> totient_sum 10 0
+32
+-- version 2
+euler_set :: Integral a => a -> a
+euler_set n = length [k | k <- [1..n-1], gcd n k == 1]
+totient_sum_set :: Integral a => a -> a
+totient_sum_set n = sum [euler k | k <- [1..n]]
+
+
+ZADANIE 17
+ghci> allTripletsTo200 = [(a,b,c) | a <- [1..200], b <- [1..a], c <- [1..a]]
+ghci> triPi = [(a,b,c) | (a,b,c) <- allTripletsTo200, a * a == b * b + c * c, gcd b c == 1]
+ghci> triPi
+[(5,3,4),(5,4,3),(13,5,12),(13,12,5),(17,8,15),(17,15,8),(25,7,24),(25,24,7),(29,20,21),(29,21,20),(37,12,35),(37,35,12),(41,9,40),(41,40,9),(53,28,45),(53,45,28),(61,11,60),(61,60,11),(65,16,63),(65,33,56),(65,56,33),(65,63,16),(73,48,55),(73,55,48),(85,13,84),(85,36,77),(85,77,36),(85,84,13),(89,39,80),(89,80,39),(97,65,72),(97,72,65),(101,20,99),(101,99,20),(109,60,91),(109,91,60),(113,15,112),(113,112,15),(125,44,117),(125,117,44),(137,88,105),(137,105,88),(145,17,144),(145,24,143),(145,143,24),(145,144,17),(149,51,140),(149,140,51),(157,85,132),(157,132,85),(169,119,120),(169,120,119),(173,52,165),(173,165,52),(181,19,180),(181,180,19),(185,57,176),(185,104,153),(185,153,104),(185,176,57),(193,95,168),(193,168,95),(197,28,195),(197,195,28)]
+
+
+ZADANIE 18
+ghci> fib1 n = if n == 0 then 0 else if n == 1 then 1 else (fib1 (n-1)) + (fib1 (n-2))
+ghci> fib1 1
+1
+ghci> fib1 2
+1
+ghci> fib1 3
+2
+ghci> fib1 4
+3
+ghci> fib1 5
+5
+ghci> fib1 6
+8
+ghci> fib1 7
+13
+ghci> fib1 20
+6765
+
+
+
+ZADANIE 19
+ghci> newton n k = if k == 0 || k == n then 1 else (newton (n-1) (k-1)) + (newton (n-1) k)
+ghci> newton 1 1
+1
+ghci> newton 6 4
+15
+ghci> newton 4 2
+6
+
+
+ZADANIE 20
+ghci> sum_of_divs n d = if d <= 1 then 1 else (sum_of_divs n (d-1)) + (if mod n d == 0 then d else 0)
+ghci> get_all_perfect n = if n <= 1 then 0 else get_all_perfect (n-1) + (if sum_of_divs n (n-1) == n then 1 else 0)
+ghci> sum_of_divs 6 5
+6
+ghci> sum_of_divs 6 6
+12
+ghci> get_all_perfect 6
+1
+ghci> get_all_perfect 7
+1
+ghci> get_all_perfect 10000
+4
+
+
+ZADANIE 22
+ghci> ff = (2 ^)
+ghci> gg = (^ 2)
+ghci> ff 4
+16
+ghci> gg 4
+16
+ghci> ff 5
+32
+ghci> gg 5
+25
+ghci> ff 6
+64
+ghci> gg 6
+36
+---
+(2 ^) n = 2 ^ n (potęga dwójki)
+(^ 2) n = n ^ 2 (kwadrat liczby)
+Funkcja zdefiniowana za pomocą jednostronnie pustego operatora binarnego przyjęty argument wkłada w brakujące miejsce.
+
+
+ZADANIE 23
+ghci> map (^ 2) [1..5]
+[1,4,9,16,25]
+ghci> map (2 ^) [1..5]
+[2,4,8,16,32]
+
