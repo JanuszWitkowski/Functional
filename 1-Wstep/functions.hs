@@ -37,13 +37,23 @@ checkPerfect n = n == sumDivisors n
 perfectNumbersTo10K = [n | n <- [1..10000], checkPerfect n]
 
 
+-- Zadanie 25
+-- rev :: [a] -> [a]
+-- rev [] = []
+-- rev (x:xs) = (rev xs) ++x
+
+
 -- Zadanie 26
--- fib_help n f0 f1 = if n <= 0 then f0 else if n == 1 then f1 else fib_help 
--- fib n = fib_help n 0 1
+fib_help n f0 f1 = if n <= 0 then f1 else fib_help (n-1) f1 (f0 + f1)
+fib n = fib_help n 0 1
 
 
 -- cdn.
 
 
 
+
+-- main = do    -- Compile using ghc to run as programs.
+    -- print (get_all_perfect 10000)
+    -- print perfectNumbersTo10K
 
