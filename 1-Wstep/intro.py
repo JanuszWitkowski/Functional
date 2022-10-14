@@ -73,6 +73,12 @@ def max_from_list(li : list, max : Number) -> Number:
     else:
         return max_from_list(tail(li), max)
 
+# def fnc8original(z : Number, w : Number):
+    # return (lambda z : (lambda w : ))
+
+def fnc8(x : Number, y : Number):
+    return lambda w : x * y + 2 * w
+
 list = [3, 1, 4, 2]
 # print(mySum(list))
 # print(mySum2(list, 0))
@@ -81,3 +87,7 @@ print(sum_of_list(list))
 print(product_of_list(list))
 print(min_from_list(list, 123))
 print(max_from_list(list, -123))
+print(fnc8(2, 3)(6))
+z = fnc8(2, 3)
+v = z(6)
+print(v)
