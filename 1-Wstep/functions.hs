@@ -1,5 +1,10 @@
 import Prelude
 
+-- Zadanie 8
+fnc8 x y = (\z -> (\w -> z + 2 * w))(x * y)
+fnc8' x y = \w -> x * y + 2 * w
+
+
 -- Zadanie 16
 fi n k acc = if k < 1 then acc else if gcd k n == 1 then fi n (k-1) (acc+1) else fi n (k-1) acc
 -- version 1

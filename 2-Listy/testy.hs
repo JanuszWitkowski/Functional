@@ -14,7 +14,9 @@ mymap f (x:xs) = f x : mymap f xs
 -- sum' xs  =  let { ys = 0 : map (\(a,b) -> a + b) (zip xs ys) } in last ys
 mysum :: Num a => [a] -> a
 -- why does it work???
-mysum xs = let { ys = 0 : mymap (\(a,b) -> a + b) (zip xs ys) } in last ys
+-- mysum xs = let { ys = 0 : mymap (\(a,b) -> a + b) (zip xs ys) } in last ys
+mysum xs = let ys = 0 : mymap (\(a,b) -> a + b) (zip xs ys) 
+           in last ys
 
 -- myproduct
 myproduct :: Num a => [a] -> a
@@ -29,14 +31,44 @@ fact n = if n == 0 then 1 else (fact (n-1)) * n
 -- Zadanie 29
 
 
+-- Zadanie 30
+-- version 1
+myinits [] = [[]]
+myinits xs = (myinits (init xs)) ++ [xs]
+-- version 2
+myinits' xs = let { ys = ([]) : mymap (\(as, b) -> as ++ [b]) (zip ys xs) } in ys
+
+
+-- Zadanie 31
+-- version 1
+mytails [] = [[]]
+mytails xs = (mytails (tail xs)) ++ [xs]
+
+
 -- Zadanie 32
--- partitions (x0:xs1:xm:xs2) = [(ys,zs) | ys <- (x0:xs1), zs <- (xm:xs2)]
+partitions xs = zip (myinits xs) (reverse (mytails xs))
 
 
 -- Zadanie 33
 nondec [] = True
 nondec [x] = True
 nondec (x1:x2:xs) = if x1 > x2 then False else nondec (x2:xs)
+
+
+-- Zadanie 34
+-- version 1
+myzip [] [] = []
+myzip (y:ys) [] = []
+myzip [] (z:zs) = []
+myzip [y] [z] = [(y, z)]
+myzip (y:ys) [z] = [(y, z)]
+myzip [y] (z:zs) = [(y, z)]
+myzip (y:ys) (z:zs) = [(y, z)] ++ (myzip ys zs)
+-- version 2
+-- ???
+
+
+-- Zadanie 35
 
 
 -- Zadanie 36

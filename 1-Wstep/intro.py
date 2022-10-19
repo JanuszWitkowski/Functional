@@ -1,5 +1,3 @@
-from math import prod
-from os import access
 from typing import Any
 from numbers import Number
 
@@ -45,6 +43,7 @@ def mySum2(li : list, acc : Number) -> Number :
     else:
         return mySum2(tail(li), acc + head(li))
 
+
 # ZADANIE 11
 def sum_of_list(li : list) -> Number :
     if isEmpty(li):
@@ -73,10 +72,12 @@ def max_from_list(li : list, max : Number) -> Number:
     else:
         return max_from_list(tail(li), max)
 
-# def fnc8original(z : Number, w : Number):
-    # return (lambda z : (lambda w : ))
 
+# ZADANIE 8
 def fnc8(x : Number, y : Number):
+    return (lambda z : (lambda w : z + 2 * w))(x * y)
+
+def fnc8_v2(x : Number, y : Number):
     return lambda w : x * y + 2 * w
 
 list = [3, 1, 4, 2]
@@ -88,6 +89,4 @@ print(product_of_list(list))
 print(min_from_list(list, 123))
 print(max_from_list(list, -123))
 print(fnc8(2, 3)(6))
-z = fnc8(2, 3)
-v = z(6)
-print(v)
+print(fnc8_v2(2, 3)(6))
