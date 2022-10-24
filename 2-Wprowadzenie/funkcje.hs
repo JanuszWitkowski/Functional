@@ -24,6 +24,7 @@ fib2 x = fib2 (x-1) + fib2 (x-2)
 
 -- Zadanie 19
 newton n k = if k == 0 || k == n then 1 else (newton (n-1) (k-1)) + (newton (n-1) k)
+-- (n+1 k+1) = (n k) + (n k+1)
 
 
 -- Zadanie 20
@@ -35,6 +36,11 @@ divisors n = [k | k <- [1..n-1], mod n k == 0]
 sumDivisors n = sum $ divisors n    -- $ == precedence, czyli najpierw wykonuje się funkcja po prawej
 checkPerfect n = n == sumDivisors n
 perfectNumbersTo10K = [n | n <- [1..10000], checkPerfect n]
+
+
+-- Zadanie 21
+plus = \a -> \b -> a + b
+mult = \a -> \b -> a * b
 
 
 -- Zadanie 25
