@@ -62,10 +62,12 @@ approx n = foldr (\a b -> (1 / a) + b) 0 [(foldl (*) 1 [1..k]) | k <- [1..n]]
 
 
 -- Zadanie 48
--- alternatesum xs = foldl 
+alternatesum xs = foldl (\sum (x,one) -> (x * one) + sum) 0 (zip xs [(-1)^(k+1) | k <- [1..(length xs)]])
 
 
 -- Zadanie 49
+-- myfilter p = concat . map box
+--     where box x = 
 
 
 -- Zadanie 50
@@ -79,6 +81,19 @@ myDropWhile f (x:xs) = if (f x) then myDropWhile f xs else x:xs
 
 
 -- Zadanie 51
+-- Uproszczony wzór na wariancję ciągu:
+-- (x1^2 + ... + xn^2)/n + ((x1 + ... + xn)/n)^2
+avgvar :: Fractional a => [a] -> (a, a)
+-- avgvar xs = (average, variance)
+--     where average = (fst tuple) + len
+--           variance = ((snd tuple) + len) ^2
+--           tuple = foldl (\(a, aa) (b, bb) -> (a + b, aa + bb)) (0.0,0.0) (zip xs (map (^2) xs))
+--           len = length xs
+avgvar xs = (average, variance)
+    where average = (fst (fst tuple)) / len
+          variance = ((snd (fst tuple)) / len) ^2
+          tuple = foldl (\((a, aa), l) (b, bb) -> ((a + b, aa + bb), l + 1.0)) ((0.0,0.0),0.0) (zip xs (map (^2) xs))
+          len = snd tuple
 
 
 -- Zadanie 52
