@@ -1,0 +1,18 @@
+Zadanie 2: Za pomocą alfa-kongruencji oraz beta-redukcji uprość lambda-wyrażenie \x. ( \y. x^3 + 3*y^2)(x+y).
+[Niech '\' oznacza lambdę.]
+
+
+\x. ( \y. x^3 + 3*y^2)(x+y)
+
+(alfa-transformacja; (x+y) nie jest związane z \x ani z \y.)
+
+\a. ( \b. a^3 + 3*b^2)(x+y) 
+
+(beta-redukcja; wiążące nawiasy wskazują na to, że (x+y) wkładamy jako argument do wszystkich wystąpień b)
+
+\a. a^3 + 3*(x+y)^2
+
+(równa się)
+
+\a. a^3 + 3x^2 + 6xy + 3y^2
+

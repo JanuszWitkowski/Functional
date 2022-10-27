@@ -15,8 +15,12 @@ mymap f (x:xs) = f x : mymap f xs
 -- sum' xs  =  let { ys = 0 : map (\(a,b) -> a + b) (zip xs ys) } in last ys
 mysum :: Num a => [a] -> a
 -- mysum xs = let { ys = 0 : mymap (\(a,b) -> a + b) (zip xs ys) } in last ys
-mysum xs = let ys = 0 : mymap (\(a,b) -> a + b) (zip xs ys) 
-           in last ys
+mysum xs = last ys
+    where ys = 0 : mymap (\(a,b) -> a + b) (zip xs ys) 
+
+mysumi' [a] = [a]
+mysumi' (x:xs) = mymap (+x) (mysumi' xs)
+mysum' xs = head (mysumi' xs)
 
 -- myproduct
 myproduct :: Num a => [a] -> a
@@ -46,12 +50,17 @@ myinits [] = [[]]
 myinits xs = (myinits (init xs)) ++ [xs]
 -- version 2
 myinits' xs = let { ys = ([]) : mymap (\(as, b) -> as ++ [b]) (zip ys xs) } in ys
+-- version 3
+myinits'' xs = [take t xs | t ,_ [0..(length xs)]]
 
 
 -- Zadanie 31
 -- version 1
 mytails [] = [[]]
 mytails xs = (mytails (tail xs)) ++ [xs]
+-- version 2
+mytails' [] = [[]]
+mytails' xs = xs : (mytails (tail xs))
 
 
 -- Zadanie 32
