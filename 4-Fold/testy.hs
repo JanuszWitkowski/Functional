@@ -43,18 +43,32 @@ counteven xs = (length xs) - (countodd xs)
 
 
 -- Zadanie 42
+nondec xs = foldl (\t (a, b) -> t && a <= b) True (zip xs (tail xs))
 
 
 -- Zadanie 43
 
 
--- Zadanie 44
+-- Zadanie 44 TODO
+-- 1st draft
+-- The real deal
+ssm [] = []
+ssm [x] = [x]
+ssm (x:xs) = fst (
+    foldl (\(path, rest) next -> 
+        if (last path) >= next then (path, tail rest) 
+        else (maxPath (path ++ (ssm (tail rest))) (path ++ [next]), tail rest)
+        ) ([x], xs) xs )
+        where maxPath ys zs = if (length ys) > (length zs) then ys else zs
+-- xs = [3,2,1,5,3,2,6,2,3,8]
+-- ys = [3,1,69,4,5,6,7,8,9,0,77,1]
 
 
 -- Zadanie 45
 
 
 -- Zadanie 46
+-- LMAO czyt. Zadanie 41
 
 
 -- Zadanie 47
