@@ -50,8 +50,8 @@ mult = \a -> \b -> a * b
 
 
 -- Zadanie 26
-fib_help n f0 f1 = if n <= 0 then f1 else fib_help (n-1) f1 (f0 + f1)
-fib n = fib_help n 0 1
+fib n = fib_help n 1 0
+    where fib_help m f0 f1 = if m <= 0 then f1 else fib_help (m-1) f1 (f0 + f1)
 
 
 -- cdn.

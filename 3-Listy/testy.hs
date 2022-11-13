@@ -51,7 +51,7 @@ myinits xs = (myinits (init xs)) ++ [xs]
 -- version 2
 myinits' xs = let { ys = ([]) : mymap (\(as, b) -> as ++ [b]) (zip ys xs) } in ys
 -- version 3
-myinits'' xs = [take t xs | t ,_ [0..(length xs)]]
+myinits'' xs = [take t xs | t <- [0..(length xs)]]
 
 
 -- Zadanie 31
@@ -103,6 +103,12 @@ trailingzeros n = multiplespowers n 5 5
 
 
 -- Zadanie 37
+qs [] = []
+qs (x:xs) = (qs [k | k <- xs, k <= x]) ++ [x] ++ (qs [k | k <- xs, k > x])
+qs' [] = []
+qs' [x] = [x]
+qs' [x1, x2] = if x1 <= x2 then [x1, x2] else [x2, x1]
+qs' (x:xs) = (qs' [k | k <- xs, k <= x]) ++ [x] ++ (qs' [k | k <- xs, k > x])
 
 
 -- Zadanie 38

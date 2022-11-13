@@ -21,6 +21,9 @@ def clear_list(li : list) -> list:
 #     return 
 
 def ssm(li : list) -> list:
+    # clearList(list)
+    # incrementDistance(sublist, id, dists, paths)
+    # getLongestPath(paths)
     dists = [0 for _ in li]
     dists[0] = 1
     paths = [[e] for e in li]
