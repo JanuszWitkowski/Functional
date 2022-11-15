@@ -48,6 +48,15 @@ mtHetman n i a b c | i < n = concat [mtHetman n (i+1) (a ++ [j]) (b ++ [j + i]) 
 -- mtHetman 8 0 [] [] []
 
 
+
+-- Zadanie 62
+mysqrt :: Double -> Double
+mysqrt n = let checkSeq a x = if x == g then x else checkSeq a g
+                  where g = (x + (a/x))/2
+           in checkSeq n n
+
+
+
 -- Zadanie 63
 
 
