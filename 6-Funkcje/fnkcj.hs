@@ -5,7 +5,6 @@ findQueens n = [perm | perm <- permutations [1..n], nodiagonalcaptures perm]
     where nodiagonalcaptures [] = True
           nodiagonalcaptures (x:xs) = (diagonalcheck x xs 1) && (nodiagonalcaptures xs)
           diagonalcheck _ [] _ = True
-         --  diagonalcheck e (y:ys) d = if y == e + d || y == e - d then False else diagonalcheck e ys (d+1)
           diagonalcheck e (y:ys) d =  (y /= e + d) && (y /= e - d) && (diagonalcheck e ys (d+1))
 
 -- _hetmani = [perm | perm <- perms, nocaptures perm]
@@ -59,4 +58,7 @@ mysqrt n = let checkSeq a x = if x == g then x else checkSeq a g
 
 -- Zadanie 63
 
+
+-- Zadanie 64
+myDoubleMap f xs = (f <$>) <$> xs
 
