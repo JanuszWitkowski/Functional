@@ -1,0 +1,4 @@
+Zadanie 1: Napisz funkcję zbierającą duplikaty, np. collect [0,0,2,0,2,3,3,1,3] = [[0,0,0],[1],[2,2],[3,3,3]]
+Zadanie 2: Napisz funkcję która dla liczby naturalnej n wyświetla wszystkie permutacje [1..n] które nie mają punktów stałych, np. aix 3 = [[3,1,2],[2,3,1]] (na 3. elemencie listy nie może być liczby 3)
+Zadanie 3: Korzystając z funkcji foldl lub foldr napisz funkcję liczb naturalnych bez zera zwraca sum(i=1..n)(1/(i^3))
+
