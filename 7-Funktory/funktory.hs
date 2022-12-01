@@ -58,7 +58,7 @@ class VectorSpace a where
     vnull :: a
     vmult :: a -> Float -> a
     vadd :: a -> a -> a
-    -- isBasis :: [a] -> Bool
+    isBasis :: [a] -> Bool
     (<.>) :: a -> a -> Float
 
 -- 66.2
@@ -67,11 +67,11 @@ instance VectorSpace RF2 where
     vnull = RF2 0.0 0.0
     vmult (RF2 x y) t = RF2 (x*t) (y*t)
     vadd (RF2 x1 y1) (RF2 x2 y2) = RF2 (x1 + x2) (y1 + y2)
-    -- isBasis vectors
-    --    | length vectors /= 2 = False
-    --    | otherwise =
-    --        let calcDet (x:y:z:_) = 
-    --        in calcDet vectors /= 0
+    isBasis vectors
+       | length vectors /= 2 = False
+       | otherwise =
+           let calcDet ((RF2 x1 y1):(RF2 x2 y2):_) = x1 * y2 - x2 * y1
+           in calcDet vectors /= 0
     (<.>) (RF2 x1 y1) (RF2 x2 y2) = x1 * x2 + y1 * y2
 
 -- 66.5
@@ -81,6 +81,11 @@ instance VectorSpace RF3 where
     vnull = RF3 0.0 0.0 0.0
     vmult v t = RF3 (x v * t) (y v * t) (z v * t)
     vadd v u = RF3 (x v + x u) (y v + y u) (z v * z u)
+    isBasis vectors
+        | length vectors /= 3 = False
+        | otherwise = 
+            let calcDet (v:u:w:_) = 0
+            in calcDet vectors /= 0
     (<.>) v u = x v * x u + y v * y u + z v * z u
 
 
@@ -95,9 +100,65 @@ data Complex a = Complex !a !a  -- ! == strict field, czyli tylko jeden typ tam 
 
 
 -- Zadanie 68
--- data Prop = T |
---             F |
---             (Prop or Prop) |
---             (Prop and Prop) |
---             (no Prop)
+data Prop = T |
+            F |
+            Var String |
+            Or Prop Prop |
+            And Prop Prop |
+            Not Prop
+            deriving Show
+
+vars :: Prop -> [String]
+vars p = mynub $ getvars p where
+    mynub [] = []
+    mynub (x:xs) = if x `elem` xs then mynub xs else x : mynub xs
+    getvars T = []
+    getvars F = []
+    getvars (Var v) = [v]
+    getvars (Not p) = getvars p
+    getvars (Or p q) = (getvars p) ++ (getvars q)
+    getvars (And p q) = (getvars p) ++ (getvars q)
+
+-- data Error = EmptyList | NoEval
+
+-- instance Show Error where
+--     show EmptyList = "BŁĄD: Pusta Lista."
+--     show NoEval = "BŁĄD: Brak ewaluacji zmiennej."
+
+eval :: Prop -> [(String, Bool)] -> Bool
+eval (Var p) xs = let getEval _ [] = False
+                      getEval p (x:xs) = if p == (fst x) then snd x else getEval p xs
+                  in getEval p xs
+eval (Not p) xs = not (eval p xs)
+eval (And p q) xs = (eval p xs) && (eval q xs)
+eval (Or p q) xs = (eval p xs) || (eval q xs)
+eval T _ = True
+eval F _ = False
+
+-- tautology :: Prop -> Bool
+-- tautology p = eval p []
+
+simpl :: Prop -> Prop
+simpl (Var p) = Var p
+simpl T = T
+simpl F = F
+-- simpl (Not p) = simpl p -- ???
+simpl (Not (Not p)) = simpl p
+simpl (And T p) = simpl p
+simpl (And p T) = simpl p
+simpl (And F _) = F
+simpl (And _ F) = F
+simpl (Or T _) = T
+simpl (Or _ T) = T
+simpl (Or F p) = simpl p
+simpl (Or p F) = simpl p
+simpl (And (Not p) (Not q)) = simpl (Not (Or p q))
+simpl (Or (Not p) (Not q)) = simpl (Not (And p q))
+simpl p
+    -- | tautology p = T
+    -- | anitautology p = F
+    | otherwise = p
+
+
+
 
