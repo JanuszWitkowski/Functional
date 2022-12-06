@@ -2,18 +2,30 @@
 -- data Pkt a = Pkt (a,a) deriving Show
 
 -- instance Functor Pkt where
---     fmap f (Pkt (x, y)) = Pkt (f x, f y)
+--     fmap f (Pkt (x, y)) = Pkt ((f x), (f y))
 
 -- instance Applicative Pkt where
---     pure x = Pkt x x
---     (Pkt f g) <*> (Pkt (x, y)) = Pkt (f x, g y)
+--     pure x = Pkt (x, x)
+--     (Pkt (f, g)) <*> (Pkt (x, y)) = Pkt ((f x), (g y))
 
 -- instance Monad Pkt where
 --     return = pure
---     (Pkt x y) >>= f = Pkt (f x) (f y)
+--     (Pkt (x, y)) >>= f = Pkt ((f x), (f y))
+
+data Pkt a = Pkt a a deriving Show
+
+instance Functor Pkt where
+    fmap f (Pkt x y) = Pkt (f x) (f y)
+
+instance Applicative Pkt where
+    pure x = Pkt x x
+    (Pkt f g) <*> (Pkt x y) = Pkt (f x) (g y)
+
+instance Monad Pkt where
+    return = pure
+    (Pkt x y) >>= f = f x
 
 
--- Zadanie 65
 data Tree a = Leaf a | Inner (Tree a) (Tree a)
 
 {- mytree: do testów --}  
@@ -40,6 +52,8 @@ instance Applicative Tree where
    pure = Leaf
    (Leaf f) <*> (Leaf x) = Leaf (f x)
    (Leaf f) <*> (Inner x y) = Inner (fmap f x) (fmap f y)
+  --  (Inner f g) <*> (Leaf x) = Inner (Leaf (fmap f x)) (Leaf (fmap g x))
+  --  (Inner f g) <*> (Inner x y) = Inner (fmap f x) (fmap g y)
 
 instance Monad Tree where
     return = pure
@@ -80,4 +94,53 @@ safeInverse x = if x == 0 then Left (BadDiv "Dzielenie przez zero w odwrotności
 
 safeHead :: [a] -> Either ErrEval a
 safeHead xs = if (null xs) then Left (BadIn "Pusta lista.") else Right (head xs)
+
+
+-- Inne monady
+data Id a = Id a deriving Show
+
+instance Functor Id where
+    fmap f (Id x) = Id (f x)
+
+instance Applicative Id where
+    pure x = Id x
+    (Id f) <*> (Id x) = Id (f x)
+
+instance Monad Id where
+    return = pure
+    (Id x) >>= f = f x
+
+
+-- Inne monady (z copilota xd)
+-- 1. Maybe
+-- 2. Either
+-- 3. IO
+-- 4. State
+-- 5. Reader
+-- 6. Writer
+-- 7. Cont
+-- 8. List
+-- 9. Tree
+-- 10. ZipList
+-- 11. Array
+-- 12. Complex
+-- 13. Ratio
+-- 14. Set
+-- 15. Map
+-- 16. Seq
+-- 17. Identity
+-- 18. Proxy
+-- 19. Const
+-- 20. Dual
+-- 21. Endo
+-- 22. First
+-- 23. Last
+-- 24. Product
+-- 25. Sum
+-- 26. WrappedMonad
+-- 27. ZipStream
+-- 28. NonEmpty
+-- 29. IdentityT
+-- 30. MaybeT
+
 

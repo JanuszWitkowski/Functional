@@ -111,7 +111,7 @@ data Prop = T |
 vars :: Prop -> [String]
 vars p = mynub $ getvars p where
     mynub [] = []
-    mynub (x:xs) = if x `elem` xs then mynub xs else x : mynub xs
+    mynub (x:xs) = if x `elem` xs then mynub xs else x : (mynub xs)
     getvars T = []
     getvars F = []
     getvars (Var v) = [v]
@@ -135,8 +135,16 @@ eval (Or p q) xs = (eval p xs) || (eval q xs)
 eval T _ = True
 eval F _ = False
 
--- tautology :: Prop -> Bool
--- tautology p = eval p []
+-- Napisz funkcj ̨e tautology:: Prop -> Bool, która sprawdza, czy dane zdanie jest taulologia.
+tautology :: Prop -> Bool
+tautology p = let myvars = vars p
+                  allvars = [(map (\x -> (x, True)) myvars)] ++ [(map (\x -> (x, False)) myvars)]
+              in all (\x -> eval p x) allvars
+
+antitautology :: Prop -> Bool
+antitautology p = let myvars = vars p
+                      allvars = [map (\x -> (x, True)) myvars] ++ [map (\x -> (x, False)) myvars]
+                  in all (\x -> not (eval p x)) allvars
 
 simpl :: Prop -> Prop
 simpl (Var p) = Var p
@@ -155,8 +163,8 @@ simpl (Or p F) = simpl p
 simpl (And (Not p) (Not q)) = simpl (Not (Or p q))
 simpl (Or (Not p) (Not q)) = simpl (Not (And p q))
 simpl p
-    -- | tautology p = T
-    -- | anitautology p = F
+    | tautology p = T
+    -- | antitautology p = F
     | otherwise = p
 
 
