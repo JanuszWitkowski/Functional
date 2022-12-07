@@ -24,13 +24,25 @@ instance Applicative MGraph where
     pure x = MGraph [x] []
     (MGraph fv fe) <*> (MGraph vs es) = MGraph (map (head fv) vs) (map (\(a,b) -> ((fst hfe) a, (snd hfe) b)) es) where hfe = head fe
 
--- instance Monad MGraph where
---     return = pure
---     (MGraph vs es) >>= f = f (head vs) where
+instance Monad MGraph where
+    return = pure
+    (MGraph vs es) >>= f = f (head vs)
 
--- instance Monad MGraph where
---     return = pure
---     (MGraph vs es) >>= f = MGraph (vs ++ vs') (es ++ es') where
---         MGraph vs' es' = f (head vs)
+
+-- From OpenAI Chat
+data MonadicGraph a = MonadicGraph [a] [(a,a)] deriving (Show, Eq)
+
+instance Functor MonadicGraph where
+    fmap f (MonadicGraph vs es) = MonadicGraph (map f vs) (map (\(x,y) -> (f x, f y)) es)
+
+-- instance Applicative MonadicGraph where
+--     pure x = MonadicGraph [x] []
+--     -- ...
+
+-- instance Monad MonadicGraph where
+--     return x = MonadicGraph [x] []
+--     (MonadicGraph xs ys) >>= f = MonadicGraph zs ws
+--         where zs = nub $ concatMap (\(MonadicGraph xs' ys') -> xs') (map f xs)
+--               ws = concatMap (\(MonadicGraph xs' ys') -> ys') (map f xs)
 
 
